@@ -2,6 +2,10 @@
 
 A simple visual regression testing tool for websites that can capture screenshots of individual URLs or entire sitemaps with customizable viewport settings.
 
+[![npm version](https://img.shields.io/npm/v/drishti.svg)](https://www.npmjs.com/package/drishti)
+[![npm downloads](https://img.shields.io/npm/dm/drishti.svg)](https://www.npmjs.com/package/drishti)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Features
 
 - 📸 Capture screenshots of single URLs or entire sitemaps
@@ -13,9 +17,20 @@ A simple visual regression testing tool for websites that can capture screenshot
 
 ## Installation
 
-Since this is a local development package, you'll need to clone and build it:
+You can install Drishti globally using npm:
 
 ```bash
+npm install -g drishti
+```
+
+### Local Development Setup
+
+If you want to develop or contribute to Drishti:
+
+```bash
+# Clone the repository
+git clone https://github.com/tanmay-pathak/drishti.git
+
 # Install dependencies
 npm install
 
