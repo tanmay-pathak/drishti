@@ -19,7 +19,7 @@ export function createCaptureCommand() {
     .option("-f, --full-page", "Capture full page", false)
     .option("-d, --delay <seconds>", "Delay before capture", "0")
     .option("-m, --mobile", "Capture in iPhone X mobile view", false)
-    .option("-c, --concurrency <number>", "Number of concurrent captures", "3")
+    .option("-c, --concurrency <number>", "Number of concurrent captures", "5")
     .action(async (source: string, options) => {
       const spinner = ora("Processing").start();
 
