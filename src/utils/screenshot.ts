@@ -1,7 +1,22 @@
 import captureWebsite from "capture-website";
 import path from "path";
 import fs from "fs/promises";
+import os from "os";
+import { execSync } from "child_process";
 import { ScreenshotOptions } from "../types/index.js";
+
+function getRepoName(): string {
+  try {
+    // Get the remote origin URL
+    const remoteUrl = execSync("git remote get-url origin").toString().trim();
+    // Extract repo name from the URL (works for both HTTPS and SSH URLs)
+    const match = remoteUrl.match(/[\/:]([^\/]+?)(?:\.git)?$/);
+    return match ? match[1] : "default";
+  } catch {
+    // If not in a git repo or no remote, use the current directory name
+    return path.basename(process.cwd());
+  }
+}
 
 function sanitizeUrl(url: string): string {
   // Remove protocol (http://, https://)
@@ -24,9 +39,12 @@ export async function takeScreenshot(
   const sanitizedUrl = sanitizeUrl(url);
   const filename = `${sanitizedUrl}${options.mobile ? "-mobile" : ""}.png`;
 
+  // Create base directory in user's home
+  const baseDir = path.join(os.homedir(), "drishti", getRepoName());
+
   const outputPath = options.branch
-    ? path.join(options.outputDir, options.branch, filename)
-    : path.join(options.outputDir, filename);
+    ? path.join(baseDir, options.branch, filename)
+    : path.join(baseDir, filename);
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
 

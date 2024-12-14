@@ -1,5 +1,4 @@
 export interface ScreenshotOptions {
-  outputDir: string;
   width?: number;
   height?: number;
   fullPage?: boolean;

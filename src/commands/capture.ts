@@ -13,7 +13,6 @@ export function createCaptureCommand() {
   command
     .description("Capture screenshots of URLs or sitemap")
     .argument("<source>", "URL or sitemap URL to capture")
-    .option("-o, --output <dir>", "Output directory", "./screenshots")
     .option("-w, --width <pixels>", "Viewport width", "1920")
     .option("-h, --height <pixels>", "Viewport height", "1080")
     .option("-f, --full-page", "Capture full page", true)
@@ -25,7 +24,6 @@ export function createCaptureCommand() {
 
       try {
         const screenshotOptions: ScreenshotOptions = {
-          outputDir: options.output,
           width: +options.width,
           height: +options.height,
           fullPage: options.fullPage,

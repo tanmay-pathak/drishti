@@ -26,9 +26,10 @@ export async function compareImages(
 
   const diffPercentage = (diffPixels / (width * height)) * 100;
   const diffFilename = path.basename(comparePath).replace(".png", "-diff.png");
-  const diffPath = path.join(diffOutputDir, diffFilename);
+  const baseDir = path.dirname(path.dirname(baselinePath));
+  const diffPath = path.join(baseDir, "diffs", diffFilename);
 
-  await fs.mkdir(diffOutputDir, { recursive: true });
+  await fs.mkdir(path.dirname(diffPath), { recursive: true });
   await fs.writeFile(diffPath, PNG.sync.write(diff));
 
   return {

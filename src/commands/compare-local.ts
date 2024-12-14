@@ -20,7 +20,6 @@ export function createCompareLocalCommand() {
       "Compare screenshots of URL between current branch and main branch",
     )
     .argument("<url>", "URL to capture and compare")
-    .option("-o, --output <dir>", "Output directory", "./screenshots")
     .option("-w, --width <pixels>", "Viewport width", "1920")
     .option("-h, --height <pixels>", "Viewport height", "1080")
     .option("-f, --full-page", "Capture full page", true)
@@ -32,7 +31,6 @@ export function createCompareLocalCommand() {
       try {
         const currentBranch = await getCurrentBranch();
         const screenshotOptions: ScreenshotOptions = {
-          outputDir: options.output,
           width: +options.width,
           height: +options.height,
           fullPage: options.fullPage,
@@ -55,11 +53,10 @@ export function createCompareLocalCommand() {
 
         // Compare screenshots
         spinner.text = "Comparing screenshots...";
-        const diffOutputDir = path.join(options.output, "diffs");
         const result = await compareImages(
           mainBranchPath,
           currentBranchPath,
-          diffOutputDir,
+          path.dirname(mainBranchPath),
         );
 
         // Switch back to original branch
