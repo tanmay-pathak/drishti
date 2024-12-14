@@ -27,6 +27,11 @@
   "bin": {
     "drishti": "dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "rm -rf dist && tsc && chmod +x dist/index.js",
     "drishti": "node dist/index.js",
