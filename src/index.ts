@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import { createCaptureCommand } from "./commands/capture.js";
-import { createCompareCommand } from "./commands/compare.js";
 
 const program = new Command();
 
@@ -11,6 +10,5 @@ program
   .version("1.0.0");
 
 program.addCommand(createCaptureCommand());
-program.addCommand(createCompareCommand());
 
 program.parse();

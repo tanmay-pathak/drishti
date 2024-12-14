@@ -19,40 +19,32 @@ export function createCaptureCommand() {
     .option("-f, --full-page", "Capture full page", false)
     .option("-d, --delay <seconds>", "Delay before capture", "0")
     .option("-m, --mobile", "Capture in iPhone X mobile view", false)
-    .option("-b, --branch <name>", "Branch name for organizing screenshots")
-    .option(
-      "-c, --concurrency <number>",
-      "Number of concurrent screenshot captures",
-      "3",
-    )
+    .option("-c, --concurrency <number>", "Number of concurrent captures", "3")
     .action(async (source: string, options) => {
       const spinner = ora("Processing").start();
 
       try {
         const screenshotOptions: ScreenshotOptions = {
           outputDir: options.output,
-          width: parseInt(options.width),
-          height: parseInt(options.height),
+          width: +options.width,
+          height: +options.height,
           fullPage: options.fullPage,
-          delay: parseInt(options.delay),
-          branch: options.branch,
+          delay: +options.delay,
           mobile: options.mobile,
         };
 
         if (source.includes("sitemap")) {
           spinner.text = "Parsing sitemap...";
           const urls = await parseSitemap(source);
-
-          spinner.text = `Capturing ${urls.length} pages...`;
-          const limit = pLimit(parseInt(options.concurrency));
+          const limit = pLimit(+options.concurrency);
           let completed = 0;
 
+          spinner.text = `Capturing ${urls.length} pages...`;
           await Promise.all(
             urls.map((url) =>
               limit(async () => {
                 await takeScreenshot(url.loc, screenshotOptions);
-                completed++;
-                spinner.text = `Captured ${completed}/${urls.length} pages`;
+                spinner.text = `Captured ${++completed}/${urls.length} pages`;
               }),
             ),
           );
