@@ -1,6 +1,7 @@
 import { Command } from "commander";
 import ora from "ora";
 import chalk from "chalk";
+import pLimit from "p-limit";
 import { takeScreenshot } from "../utils/screenshot.js";
 import { parseSitemap } from "../utils/sitemap.js";
 import { getErrorMessage } from "../utils/error.js";
@@ -22,6 +23,11 @@ export function createCaptureCommand() {
       "Branch name for organizing screenshots",
       "main",
     )
+    .option(
+      "-c, --concurrency <number>",
+      "Number of concurrent screenshot captures",
+      "3",
+    )
     .action(async (source: string, options) => {
       const spinner = ora("Processing").start();
 
@@ -40,10 +46,18 @@ export function createCaptureCommand() {
           const urls = await parseSitemap(source);
 
           spinner.text = `Capturing ${urls.length} pages...`;
-          for (const [index, url] of urls.entries()) {
-            spinner.text = `Capturing page ${index + 1}/${urls.length}: ${url.loc}`;
-            await takeScreenshot(url.loc, screenshotOptions);
-          }
+          const limit = pLimit(parseInt(options.concurrency));
+          let completed = 0;
+
+          await Promise.all(
+            urls.map((url) =>
+              limit(async () => {
+                await takeScreenshot(url.loc, screenshotOptions);
+                completed++;
+                spinner.text = `Captured ${completed}/${urls.length} pages`;
+              }),
+            ),
+          );
         } else {
           await takeScreenshot(source, screenshotOptions);
         }

@@ -42,7 +42,11 @@ export function createCompareCommand() {
               branch: "main",
             });
           } catch (error) {
-            spinner.fail(chalk.red(`Failed to capture main branch: ${getErrorMessage(error)}`));
+            spinner.fail(
+              chalk.red(
+                `Failed to capture main branch: ${getErrorMessage(error)}`,
+              ),
+            );
             process.exit(1);
           }
 
@@ -57,7 +61,11 @@ export function createCompareCommand() {
               branch: currentBranch,
             });
           } catch (error) {
-            spinner.fail(chalk.red(`Failed to capture current branch: ${getErrorMessage(error)}`));
+            spinner.fail(
+              chalk.red(
+                `Failed to capture current branch: ${getErrorMessage(error)}`,
+              ),
+            );
             process.exit(1);
           }
 

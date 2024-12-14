@@ -17,7 +17,6 @@ function sanitizeUrl(url: string): string {
   return clean;
 }
 
-
 export async function takeScreenshot(
   url: string,
   options: ScreenshotOptions,
