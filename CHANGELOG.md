@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/tanmay-pathak/drishti/compare/v1.0.0...v1.0.1) (2024-12-14)
+
+
+### Bug Fixes
+
+* default full page screenshot ([83132e9](https://github.com/tanmay-pathak/drishti/commit/83132e937e1ed181c7c7550c61298b70b58f182b))
+
 ## 1.0.0 (2024-12-14)
 
 ### Features
