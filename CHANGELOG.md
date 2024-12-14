@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/tanmay-pathak/drishti/compare/v1.0.1...v1.1.0) (2024-12-14)
+
+
+### Features
+
+* compare a url locally between branches ([270da27](https://github.com/tanmay-pathak/drishti/commit/270da270651eff81f651c0ab0e1257daf96ea9c8))
+
+
+### Bug Fixes
+
+* perms ([e791007](https://github.com/tanmay-pathak/drishti/commit/e79100719395790d48787333dea707d0d976d32e))
+* secret name ([2f984c8](https://github.com/tanmay-pathak/drishti/commit/2f984c81c9b319cd7e586586c2f6c8be695005fe))
+
 ## [1.0.1](https://github.com/tanmay-pathak/drishti/compare/v1.0.0...v1.0.1) (2024-12-14)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "drishti",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Visual regression testing tool for websites",
   "repository": {
     "type": "git",
