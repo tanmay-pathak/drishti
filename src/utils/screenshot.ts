@@ -22,7 +22,7 @@ export async function takeScreenshot(
   options: ScreenshotOptions,
 ): Promise<string> {
   const sanitizedUrl = sanitizeUrl(url);
-  const filename = `${sanitizedUrl}.png`;
+  const filename = `${sanitizedUrl}${options.mobile ? "-mobile" : ""}.png`;
 
   const outputPath = path.join(
     options.outputDir,
@@ -41,12 +41,18 @@ export async function takeScreenshot(
     // File doesn't exist, which is fine
   }
 
-  await captureWebsite.file(url, outputPath, {
+  const captureOptions: any = {
     width: options.width || 1920,
     height: options.height || 1080,
     fullPage: options.fullPage || true,
     delay: options.delay || 0,
-  });
+  };
+
+  if (options.mobile) {
+    captureOptions.emulateDevice = "iPhone X";
+  }
+
+  await captureWebsite.file(url, outputPath, captureOptions);
 
   return outputPath;
 }

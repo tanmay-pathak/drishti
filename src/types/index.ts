@@ -5,6 +5,7 @@ export interface ScreenshotOptions {
   fullPage?: boolean;
   delay?: number;
   branch?: string;
+  mobile?: boolean;
 }
 
 export interface ComparisonResult {

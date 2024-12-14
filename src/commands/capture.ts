@@ -18,6 +18,7 @@ export function createCaptureCommand() {
     .option("-h, --height <pixels>", "Viewport height", "1080")
     .option("-f, --full-page", "Capture full page", false)
     .option("-d, --delay <seconds>", "Delay before capture", "0")
+    .option("-m, --mobile", "Capture in iPhone X mobile view", false)
     .option(
       "-b, --branch <name>",
       "Branch name for organizing screenshots",
@@ -39,6 +40,7 @@ export function createCaptureCommand() {
           fullPage: options.fullPage,
           delay: parseInt(options.delay),
           branch: options.branch,
+          mobile: options.mobile,
         };
 
         if (source.includes("sitemap")) {
