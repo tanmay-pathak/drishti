@@ -16,7 +16,7 @@ export function createCaptureCommand() {
     .option("-o, --output <dir>", "Output directory", "./screenshots")
     .option("-w, --width <pixels>", "Viewport width", "1920")
     .option("-h, --height <pixels>", "Viewport height", "1080")
-    .option("-f, --full-page", "Capture full page", false)
+    .option("-f, --full-page", "Capture full page", true)
     .option("-d, --delay <seconds>", "Delay before capture", "0")
     .option("-m, --mobile", "Capture in iPhone X mobile view", false)
     .option("-c, --concurrency <number>", "Number of concurrent captures", "5")
