@@ -6,8 +6,7 @@ const program = new Command();
 
 program
   .name("drishti")
-  .description("Visual regression testing tool for websites")
-  .version("1.0.0");
+  .description("Visual regression testing tool for websites.");
 
 program.addCommand(createCaptureCommand());
 
