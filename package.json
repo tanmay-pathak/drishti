@@ -12,7 +12,8 @@
     "start": "node dist/index.js",
     "dev": "ts-node --esm src/index.ts",
     "prepare": "npm run build",
-    "drishti": "node dist/index.js"
+    "drishti": "node dist/index.js",
+    "fix-permissions": "sudo chown -R $USER:$(id -gn) ."
   },
   "dependencies": {
     "capture-website": "^4.2.0",

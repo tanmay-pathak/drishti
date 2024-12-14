@@ -3,11 +3,37 @@ import path from "path";
 import fs from "fs/promises";
 import { ScreenshotOptions } from "../types/index.js";
 
+function sanitizeUrl(url: string): string {
+  // Remove protocol (http://, https://)
+  let clean = url.replace(/^https?:\/\//, "");
+  // Remove trailing slashes
+  clean = clean.replace(/\/$/, "");
+  // Replace special characters with dashes
+  clean = clean.replace(/[^a-zA-Z0-9]/g, "-");
+  // Replace multiple dashes with single dash
+  clean = clean.replace(/-+/g, "-");
+  // Trim dashes from start and end
+  clean = clean.replace(/^-+|-+$/g, "");
+  return clean;
+}
+
+function getTimestamp(): string {
+  const now = new Date();
+  return now
+    .toISOString()
+    .replace(/[:.]/g, "-") // Replace colons and dots with dashes
+    .replace("T", "_") // Replace T with underscore
+    .replace("Z", ""); // Remove Z
+}
+
 export async function takeScreenshot(
   url: string,
   options: ScreenshotOptions,
 ): Promise<string> {
-  const filename = `${Buffer.from(url).toString("base64")}.png`;
+  const sanitizedUrl = sanitizeUrl(url);
+  const timestamp = getTimestamp();
+  const filename = `${sanitizedUrl}_${timestamp}.png`;
+
   const outputPath = path.join(
     options.outputDir,
     options.branch || "main",
@@ -15,6 +41,15 @@ export async function takeScreenshot(
   );
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
+
+  // Check if file exists
+  try {
+    await fs.access(outputPath);
+    // If file exists, delete it
+    await fs.unlink(outputPath);
+  } catch {
+    // File doesn't exist, which is fine
+  }
 
   await captureWebsite.file(url, outputPath, {
     width: options.width || 1920,
