@@ -2,6 +2,26 @@
   "name": "drishti",
   "version": "1.0.0",
   "description": "Visual regression testing tool for websites",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tanmay-pathak/drishti.git"
+  },
+  "license": "MIT",
+  "author": "Tanmay Pathak",
+  "keywords": [
+    "visual-regression",
+    "testing",
+    "screenshot",
+    "comparison",
+    "visual-testing",
+    "automation",
+    "web-testing",
+    "qa"
+  ],
+  "bugs": {
+    "url": "https://github.com/tanmay-pathak/drishti/issues"
+  },
+  "homepage": "https://github.com/tanmay-pathak/drishti#readme",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
