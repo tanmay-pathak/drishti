@@ -19,11 +19,7 @@ export function createCaptureCommand() {
     .option("-f, --full-page", "Capture full page", false)
     .option("-d, --delay <seconds>", "Delay before capture", "0")
     .option("-m, --mobile", "Capture in iPhone X mobile view", false)
-    .option(
-      "-b, --branch <name>",
-      "Branch name for organizing screenshots",
-      "main",
-    )
+    .option("-b, --branch <name>", "Branch name for organizing screenshots")
     .option(
       "-c, --concurrency <number>",
       "Number of concurrent screenshot captures",

@@ -24,11 +24,9 @@ export async function takeScreenshot(
   const sanitizedUrl = sanitizeUrl(url);
   const filename = `${sanitizedUrl}${options.mobile ? "-mobile" : ""}.png`;
 
-  const outputPath = path.join(
-    options.outputDir,
-    options.branch || "main",
-    filename,
-  );
+  const outputPath = options.branch
+    ? path.join(options.outputDir, options.branch, filename)
+    : path.join(options.outputDir, filename);
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
 
