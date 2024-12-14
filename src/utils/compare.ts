@@ -7,7 +7,6 @@ import { ComparisonResult } from "../types/index.js";
 export async function compareImages(
   baselinePath: string,
   comparePath: string,
-  diffOutputDir: string,
 ): Promise<ComparisonResult> {
   const baselineImage = PNG.sync.read(await fs.readFile(baselinePath));
   const compareImage = PNG.sync.read(await fs.readFile(comparePath));
@@ -26,8 +25,7 @@ export async function compareImages(
 
   const diffPercentage = (diffPixels / (width * height)) * 100;
   const diffFilename = path.basename(comparePath).replace(".png", "-diff.png");
-  const baseDir = path.dirname(path.dirname(baselinePath));
-  const diffPath = path.join(baseDir, "diffs", diffFilename);
+  const diffPath = path.join(path.dirname(baselinePath), "diffs", diffFilename);
 
   await fs.mkdir(path.dirname(diffPath), { recursive: true });
   await fs.writeFile(diffPath, PNG.sync.write(diff));

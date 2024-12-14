@@ -56,7 +56,6 @@ export function createCompareLocalCommand() {
         const result = await compareImages(
           mainBranchPath,
           currentBranchPath,
-          path.dirname(mainBranchPath),
         );
 
         // Switch back to original branch
