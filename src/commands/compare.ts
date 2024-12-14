@@ -1,66 +1,94 @@
 import { Command } from "commander";
 import ora from "ora";
 import chalk from "chalk";
-import path from "path";
-import fs from "fs/promises";
 import { compareImages } from "../utils/compare.js";
 import { getErrorMessage } from "../utils/error.js";
-import type { ComparisonResult } from "../types/index.js";
+import { takeScreenshot } from "../utils/screenshot.js";
+import {
+  getCurrentBranch,
+  switchBranch,
+  restoreOriginalBranch,
+} from "../utils/git.js";
 
 export function createCompareCommand() {
   const command = new Command("compare");
 
   command
-    .description("Compare screenshots between branches or against baseline")
-    .argument("<baseDir>", "Base directory containing screenshots")
-    .argument("<compareDir>", "Directory containing screenshots to compare")
+    .description("Compare a URL between your current branch and main")
+    .argument("<url>", "URL to compare")
     .option("-o, --output <dir>", "Output directory for diff images", "./diffs")
     .option(
       "-t, --threshold <percentage>",
       "Difference threshold percentage",
       "1",
     )
-    .action(async (baseDir: string, compareDir: string, options) => {
+    .action(async (url: string, options) => {
       const spinner = ora("Comparing screenshots").start();
+      let mainScreenshot: string | null = null;
+      let branchScreenshot: string | null = null;
 
       try {
-        const results: ComparisonResult[] = [];
-        const baseFiles = await fs.readdir(baseDir);
+        const currentBranch = await getCurrentBranch();
 
-        for (const file of baseFiles) {
-          if (!file.endsWith(".png")) continue;
-
-          const basePath = path.join(baseDir, file);
-          const comparePath = path.join(compareDir, file);
+        try {
+          // Switch to main and take screenshot
+          spinner.text = "Switching to main branch";
+          await switchBranch("main");
 
           try {
-            await fs.access(comparePath);
+            spinner.text = "Capturing screenshot from main branch";
+            mainScreenshot = await takeScreenshot(url, {
+              outputDir: "./screenshots",
+              branch: "main",
+            });
+          } catch (error) {
+            spinner.fail(chalk.red(`Failed to capture main branch: ${getErrorMessage(error)}`));
+            process.exit(1);
+          }
+
+          // Switch to comparison branch and take screenshot
+          spinner.text = `Switching to ${currentBranch} branch`;
+          await switchBranch(currentBranch);
+
+          try {
+            spinner.text = "Capturing screenshot from current branch";
+            branchScreenshot = await takeScreenshot(url, {
+              outputDir: "./screenshots",
+              branch: currentBranch,
+            });
+          } catch (error) {
+            spinner.fail(chalk.red(`Failed to capture current branch: ${getErrorMessage(error)}`));
+            process.exit(1);
+          }
+
+          // Switch back to original branch
+          spinner.text = "Switching back to original branch";
+          await restoreOriginalBranch(currentBranch);
+
+          if (mainScreenshot && branchScreenshot) {
+            spinner.text = "Comparing screenshots";
             const result = await compareImages(
-              basePath,
-              comparePath,
+              mainScreenshot,
+              branchScreenshot,
               options.output,
             );
-            results.push(result);
-          } catch (err) {
-            spinner.warn(chalk.yellow(`Missing comparison file: ${file}`));
+
+            if (result.passed) {
+              spinner.succeed(chalk.green("Comparison passed!"));
+            } else {
+              spinner.fail(
+                chalk.red(
+                  `Comparison failed: ${result.diffPercentage.toFixed(2)}% different`,
+                ),
+              );
+              console.log(chalk.gray(`Diff image: ${result.diffImagePath}`));
+              process.exit(1);
+            }
           }
-        }
-
-        const failed = results.filter((r) => !r.passed);
-
-        if (failed.length === 0) {
-          spinner.succeed(chalk.green("All comparisons passed!"));
-        } else {
-          spinner.fail(chalk.red(`${failed.length} comparisons failed:`));
-          failed.forEach((f) => {
-            console.log(
-              chalk.red(
-                `  ✖ ${f.url}: ${f.diffPercentage.toFixed(2)}% different`,
-              ),
-            );
-            console.log(chalk.gray(`    Diff image: ${f.diffImagePath}`));
-          });
-          process.exit(1);
+        } catch (error) {
+          // Ensure we switch back to original branch even if there's an error
+          await restoreOriginalBranch(currentBranch);
+          throw error;
         }
       } catch (error) {
         spinner.fail(chalk.red(`Error: ${getErrorMessage(error)}`));

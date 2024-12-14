@@ -17,22 +17,13 @@ function sanitizeUrl(url: string): string {
   return clean;
 }
 
-function getTimestamp(): string {
-  const now = new Date();
-  return now
-    .toISOString()
-    .replace(/[:.]/g, "-") // Replace colons and dots with dashes
-    .replace("T", "_") // Replace T with underscore
-    .replace("Z", ""); // Remove Z
-}
 
 export async function takeScreenshot(
   url: string,
   options: ScreenshotOptions,
 ): Promise<string> {
   const sanitizedUrl = sanitizeUrl(url);
-  const timestamp = getTimestamp();
-  const filename = `${sanitizedUrl}_${timestamp}.png`;
+  const filename = `${sanitizedUrl}.png`;
 
   const outputPath = path.join(
     options.outputDir,
