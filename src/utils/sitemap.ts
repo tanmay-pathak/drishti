@@ -15,11 +15,11 @@ interface SitemapXML {
 
 export async function parseSitemap(sitemapUrl: string): Promise<SitemapURL[]> {
   const agent = new https.Agent({
-    rejectUnauthorized: false
+    rejectUnauthorized: false,
   });
 
   const response = await fetch(sitemapUrl, {
-    agent: sitemapUrl.startsWith('https:') ? agent : undefined
+    agent: sitemapUrl.startsWith("https:") ? agent : undefined,
   });
   const xmlContent = await response.text();
 

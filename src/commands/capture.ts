@@ -54,8 +54,7 @@ export function createCaptureCommand() {
 
         spinner.succeed(chalk.green("Screenshots captured successfully"));
       } catch (error) {
-        spinner.fail(chalk.red(`Error: ${getErrorMessage(error)}`));
-        process.exit(1);
+        chalk.red(`Error: ${getErrorMessage(error)}`);
       }
     });
 
