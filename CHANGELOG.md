@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/tanmay-pathak/drishti/compare/v1.1.0...v1.1.1) (2024-12-14)
+
+
+### Bug Fixes
+
+* compare local saving in current repo and that image getting stashed and unavailable ([7fe73f0](https://github.com/tanmay-pathak/drishti/commit/7fe73f0e1ed48886054d94400722ff4642d86bd7))
+* storing screenshot in cwd ([226871b](https://github.com/tanmay-pathak/drishti/commit/226871b15b4dcb8ba3c1042775cd625b85ee7f85))
+
 ## [1.1.0](https://github.com/tanmay-pathak/drishti/compare/v1.0.1...v1.1.0) (2024-12-14)
 
 
